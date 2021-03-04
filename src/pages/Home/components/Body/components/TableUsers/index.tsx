@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-import { Button, Table, Form, InputNumber, Input, notification } from 'antd';
+import {
+  Button,
+  Table,
+  Form,
+  InputNumber,
+  Input,
+  notification,
+  Select,
+} from 'antd';
 
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -10,11 +18,15 @@ import { FaTrash, FaCheck, FaTimes, FaPencilAlt } from 'react-icons/fa';
 
 import { deleteUser, editUser } from 'queries/users';
 
+import AddButton from './components/AddButton';
+
+const { Option } = Select;
+
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: string;
   title: any;
-  inputType: 'number' | 'text';
+  inputType: 'number' | 'select' | 'text';
   children: React.ReactNode;
 }
 
@@ -25,7 +37,22 @@ const EditableCell = ({
   children,
   ...restProps
 }: EditableCellProps) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+  const inputNode = (() => {
+    if (inputType === 'number') {
+      return <InputNumber />;
+    }
+
+    if (inputType === 'select') {
+      return (
+        <Select placeholder="Gender">
+          <Option value="M">M</Option>
+          <Option value="F">F</Option>
+        </Select>
+      );
+    }
+
+    return <Input />;
+  })();
 
   return (
     <td {...restProps}>
@@ -40,14 +67,27 @@ const EditableCell = ({
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (
-                  !value ||
-                  getFieldValue('password') === value ||
-                  dataIndex !== 'confirmPassword'
-                ) {
+                const errorMessage = () => {
+                  if (dataIndex === 'confirmPassword') {
+                    if (getFieldValue('password') !== value) {
+                      return Promise.reject(new Error('Passwords not match'));
+                    }
+
+                    return Promise.resolve();
+                  }
+
+                  if (dataIndex === 'age') {
+                    if (Number(value) < 18) {
+                      return Promise.reject(new Error('Minimum age is 18 yo'));
+                    }
+
+                    return Promise.resolve();
+                  }
+
                   return Promise.resolve();
-                }
-                return Promise.reject(new Error('Passwords not match'));
+                };
+
+                return errorMessage();
               },
             }),
           ]}
@@ -242,7 +282,12 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
       ...col,
       onCell: (record: IQuery) => ({
         record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
+        inputType: (() => {
+          if (col.dataIndex === 'age') return 'number';
+          if (col.dataIndex === 'gender') return 'select';
+
+          return 'text';
+        })(),
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -252,15 +297,8 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
 
   return (
     <div>
-      <Button
-        onClick={() => {
-          //
-        }}
-        type="primary"
-        style={{ marginBottom: 16 }}
-      >
-        Add a row
-      </Button>
+      <AddButton />
+      <div style={{ height: 16 }} />
       <Form form={form} component={false}>
         <Table
           bordered
