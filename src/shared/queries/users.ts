@@ -31,7 +31,9 @@ interface IEditUser {
 }
 
 const editUser = async ({ id, userData }: IEditUser) => {
-  await api.put(`/users/${id}`, userData);
+  const { data: user } = await api.put(`/users/${id}`, userData);
+
+  return user;
 };
 
 const deleteUser = async (id: number) => {

@@ -18,7 +18,7 @@ import { FaTrash, FaCheck, FaTimes, FaPencilAlt } from 'react-icons/fa';
 
 import { deleteUser, editUser, getUsersByName } from 'queries/users';
 
-import AddButton from './components/AddButton';
+import AddButton from '../AddButton';
 
 const { Option } = Select;
 
@@ -356,6 +356,7 @@ const TableUsers = ({ originData, loadingQuery }: TableUsersProps) => {
             onChange: cancel,
           }}
           loading={loading || loadingQuery}
+          rowKey={item => item.id}
         />
       </Form>
     </div>

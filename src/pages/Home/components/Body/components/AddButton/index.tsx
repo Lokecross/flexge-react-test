@@ -48,7 +48,6 @@ const AddButton = () => {
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setVisible(false);
   };
 
@@ -84,7 +83,14 @@ const AddButton = () => {
         <Form
           name="basic"
           layout="vertical"
-          initialValues={{ remember: true }}
+          initialValues={{
+            name: '',
+            age: '',
+            gender: 'M',
+            username: '',
+            password: '',
+            confirmPassword: '',
+          }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
