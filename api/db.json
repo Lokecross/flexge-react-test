@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "age": "22",
+      "gender": "M",
+      "username": "johndoe",
+      "password": "123456",
+      "confirmPassword": "123456",
+      "id": 1
+    }
+  ]
+}
