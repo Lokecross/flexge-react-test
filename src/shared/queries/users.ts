@@ -25,7 +25,12 @@ const createUser = async (userData: IUser) => {
   await api.post('/users', userData);
 };
 
-const editUser = async (id: string, userData: IUser) => {
+interface IEditUser {
+  id: number;
+  userData: IUser;
+}
+
+const editUser = async ({ id, userData }: IEditUser) => {
   await api.put(`/users/${id}`, userData);
 };
 

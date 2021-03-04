@@ -1,16 +1,9 @@
-import { useState } from 'react';
+import { useQuery } from 'react-query';
 
-import { Button, Table, Tooltip, TableColumnProps } from 'antd';
-
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-
-import { red } from '@ant-design/colors';
-
-import { FaTrash } from 'react-icons/fa';
-
-import { deleteUser, getUsers } from 'queries/users';
+import { getUsers } from 'queries/users';
 
 import { Container } from './styles';
+import TableUsers from './components/TableUsers';
 
 interface IQuery {
   id: number;
@@ -23,69 +16,6 @@ interface IQuery {
 }
 
 const Body = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation(deleteUser, {
-    onSuccess: () => {
-      setLoading(false);
-      queryClient.invalidateQueries('users');
-    },
-  });
-
-  const columns: TableColumnProps<IQuery>[] = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
-    },
-    {
-      title: 'Username',
-      dataIndex: 'username',
-      key: 'username',
-    },
-    {
-      title: 'Password',
-      dataIndex: 'password',
-      key: 'password',
-    },
-    {
-      title: 'Confirm Password',
-      dataIndex: 'confirmPassword',
-      key: 'confirmPassword',
-    },
-    {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
-      render: (_, record) => (
-        <Tooltip title="Delete">
-          <Button
-            danger
-            type="dashed"
-            shape="circle"
-            icon={<FaTrash color={red.primary} size={14} />}
-            onClick={() => {
-              setLoading(true);
-              mutation.mutate(record.id);
-            }}
-          />
-        </Tooltip>
-      ),
-    },
-  ];
-
   const { isLoading, error, data } = useQuery<IQuery[], any>('users', getUsers);
 
   if (isLoading) {
@@ -98,7 +28,7 @@ const Body = () => {
 
   return (
     <Container>
-      <Table bordered dataSource={data} columns={columns} loading={loading} />
+      <TableUsers originData={data as IQuery[]} />
     </Container>
   );
 };
