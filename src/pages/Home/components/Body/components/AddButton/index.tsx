@@ -86,7 +86,7 @@ const AddButton = () => {
           initialValues={{
             name: '',
             age: '',
-            gender: 'M',
+            gender: 'Male',
             username: '',
             password: '',
             confirmPassword: '',
@@ -123,8 +123,8 @@ const AddButton = () => {
 
           <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
             <Select placeholder="Gender">
-              <Option value="M">M</Option>
-              <Option value="F">F</Option>
+              <Option value="Male">Male</Option>
+              <Option value="Female">Female</Option>
             </Select>
           </Form.Item>
 

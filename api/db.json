@@ -1,49 +1,31 @@
 {
   "users": [
     {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
-      "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
-      "id": 14
-    },
-    {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
-      "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
-      "id": 15
-    },
-    {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
-      "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
-      "id": 16
-    },
-    {
       "name": "teste",
-      "age": 21,
-      "gender": "M",
+      "age": 18,
+      "gender": "Male",
       "username": "johndoe33322@gmail.com",
-      "password": "123123",
-      "confirmPassword": "123123",
+      "password": "123124",
+      "confirmPassword": "123124",
       "id": 17
     },
     {
-      "name": "teste",
-      "age": 21,
-      "gender": "M",
-      "username": "johndoe33322@gmail.com",
-      "password": "123123",
-      "confirmPassword": "123123",
-      "id": 18
+      "name": "John Doe",
+      "age": "20",
+      "gender": "Male",
+      "username": "johndoe",
+      "password": "123456",
+      "confirmPassword": "123456",
+      "id": 29
+    },
+    {
+      "name": "John Doe",
+      "age": "20",
+      "gender": "Male",
+      "username": "johndoe",
+      "password": "123456",
+      "confirmPassword": "123456",
+      "id": 30
     }
   ]
 }

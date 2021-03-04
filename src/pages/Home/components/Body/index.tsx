@@ -26,6 +26,7 @@ const Body = () => {
           message: 'An error has occurred',
         });
       },
+      retry: false,
     },
   );
 
