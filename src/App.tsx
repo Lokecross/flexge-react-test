@@ -1,5 +1,17 @@
+import 'antd/dist/antd.css';
+
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+import Home from 'pages/Home';
+
+export const queryClient = new QueryClient();
+
 const App = () => {
-  return <div />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Home />
+    </QueryClientProvider>
+  );
 };
 
 export default App;

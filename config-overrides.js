@@ -7,8 +7,8 @@ module.exports = function override(config) {
       ...config.alias,
       'pages': path.resolve(__dirname, 'src/pages'),
       'routes': path.resolve(__dirname, 'src/routes'),
-      'services': path.resolve(__dirname, 'src/services'),
       'store': path.resolve(__dirname, 'src/store'),
+      'services': path.resolve(__dirname, 'src/shared/services'),
       'components': path.resolve(__dirname, 'src/shared/components'),
       'queries': path.resolve(__dirname, 'src/shared/queries')
     },

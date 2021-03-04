@@ -4,8 +4,8 @@
     "paths": {
       "pages/*": ["./src/pages/*"],
       "routes/*": ["./src/routes/*"],
-      "services/*": ["./src/services/*"],
       "store/*": ["./src/store/*"],
+      "services/*": ["./src/shared/services/*"],
       "components/*": ["./src/shared/components/*"],
       "queries/*": ["./src/shared/queries/*"]
     }
