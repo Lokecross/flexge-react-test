@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import Home from 'pages/Home';
 
-export const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
 const App = () => {
   return (

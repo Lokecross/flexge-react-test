@@ -29,7 +29,7 @@ const editUser = async (id: string, userData: IUser) => {
   await api.put(`/users/${id}`, userData);
 };
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (id: number) => {
   await api.delete(`/users/${id}`);
 };
 
