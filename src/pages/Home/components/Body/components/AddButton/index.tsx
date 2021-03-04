@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { Modal, Button } from 'antd';
 
+import { UserAddOutlined } from '@ant-design/icons';
+
 import FormUser from '../FormUser';
 
 const AddButton = () => {
@@ -21,11 +23,11 @@ const AddButton = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} icon={<UserAddOutlined />}>
         Add User
       </Button>
       <Modal
-        title="Title"
+        title="Add User Form"
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
