@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start:react": "react-app-rewired start",
-    "start:api": "yarn json-server --watch api/db.json --port 3333",
+    "start:api": "json-server --watch api/db.json --port 3333",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
