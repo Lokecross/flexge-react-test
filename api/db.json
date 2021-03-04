@@ -1,30 +1,12 @@
 {
   "users": [
     {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
+      "name": "John Do",
+      "age": 21,
+      "gender": "F",
       "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
-      "id": 35
-    },
-    {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
-      "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
-      "id": 36
-    },
-    {
-      "name": "John Doe",
-      "age": "20",
-      "gender": "M",
-      "username": "johndoe",
-      "password": "123456",
-      "confirmPassword": "123456",
+      "password": "12345",
+      "confirmPassword": "12345",
       "id": 37
     },
     {

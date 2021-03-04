@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { Button, Table, Tooltip, Form, InputNumber, Input } from 'antd';
+import { Button, Table, Form, InputNumber, Input } from 'antd';
 
 import { useMutation, useQueryClient } from 'react-query';
 
-import { red, orange, green, blue } from '@ant-design/colors';
+import { red, blue } from '@ant-design/colors';
 
 import { FaTrash, FaCheck, FaTimes, FaPencilAlt } from 'react-icons/fa';
 
@@ -21,7 +21,6 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
 const EditableCell = ({
   editing,
   dataIndex,
-  title,
   inputType,
   children,
   ...restProps
@@ -37,8 +36,20 @@ const EditableCell = ({
           rules={[
             {
               required: true,
-              message: `Please Input ${title}!`,
+              message: `Required field`,
             },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (
+                  !value ||
+                  getFieldValue('password') === value ||
+                  dataIndex !== 'confirmPassword'
+                ) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Passwords not match'));
+              },
+            }),
           ]}
         >
           {inputNode}
@@ -159,53 +170,48 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
 
         return editable ? (
           <div style={{ display: 'flex' }}>
-            <Tooltip title="Save">
-              <Button
-                type="dashed"
-                shape="circle"
-                icon={<FaCheck color={blue[2]} size={14} />}
-                onClick={() => {
-                  save(record.id);
-                }}
-              />
-            </Tooltip>
+            <Button
+              type="dashed"
+              shape="circle"
+              icon={<FaCheck color={blue[2]} size={14} />}
+              onClick={() => {
+                save(record.id);
+              }}
+            />
+
             <div style={{ width: 5 }} />
-            <Tooltip title="Cencel">
-              <Button
-                type="dashed"
-                shape="circle"
-                icon={<FaTimes color="#d9d9d9" size={14} />}
-                onClick={cancel}
-              />
-            </Tooltip>
+
+            <Button
+              type="dashed"
+              shape="circle"
+              icon={<FaTimes color="#d9d9d9" size={14} />}
+              onClick={cancel}
+            />
           </div>
         ) : (
           <div style={{ display: 'flex' }}>
-            <Tooltip title="Edit">
-              <Button
-                type="dashed"
-                shape="circle"
-                icon={<FaPencilAlt color="#d9d9d9" size={14} />}
-                onClick={() => {
-                  edit(record);
-                }}
-              />
-            </Tooltip>
+            <Button
+              type="dashed"
+              shape="circle"
+              icon={<FaPencilAlt color="#d9d9d9" size={14} />}
+              onClick={() => {
+                edit(record);
+              }}
+            />
+
             <div style={{ width: 5 }} />
-            <Tooltip title="Delete">
+            {!editingKey && (
               <Button
-                danger={!editingKey}
+                danger
                 type="dashed"
                 shape="circle"
-                icon={
-                  <FaTrash color={editingKey ? red[2] : red[4]} size={14} />
-                }
+                icon={<FaTrash color={red[4]} size={14} />}
                 onClick={() => {
                   setLoading(true);
                   mutationDelete.mutate(record.id);
                 }}
               />
-            </Tooltip>
+            )}
           </div>
         );
       },
