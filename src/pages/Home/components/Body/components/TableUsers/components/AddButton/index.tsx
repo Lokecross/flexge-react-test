@@ -32,6 +32,7 @@ const AddButton = () => {
       setVisible(false);
     },
     onError: () => {
+      setLoading(false);
       notification.error({
         message: 'An error has occurred',
       });

@@ -2,6 +2,7 @@ import { useQuery } from 'react-query';
 
 import { getUsers } from 'queries/users';
 
+import { notification } from 'antd';
 import { Container } from './styles';
 import TableUsers from './components/TableUsers';
 
@@ -16,14 +17,32 @@ interface IQuery {
 }
 
 const Body = () => {
-  const { isLoading, error, data } = useQuery<IQuery[], any>('users', getUsers);
+  const { isLoading, error, data } = useQuery<IQuery[], any>(
+    'users',
+    getUsers,
+    {
+      onError: () => {
+        notification.error({
+          message: 'An error has occurred',
+        });
+      },
+    },
+  );
 
   if (isLoading) {
-    return <div />;
+    return (
+      <Container>
+        <TableUsers originData={[]} loadingQuery />
+      </Container>
+    );
   }
 
   if (error) {
-    return <div />;
+    return (
+      <Container>
+        <TableUsers originData={[]} />
+      </Container>
+    );
   }
 
   return (

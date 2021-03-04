@@ -16,7 +16,7 @@ import { red, blue } from '@ant-design/colors';
 
 import { FaTrash, FaCheck, FaTimes, FaPencilAlt } from 'react-icons/fa';
 
-import { deleteUser, editUser } from 'queries/users';
+import { deleteUser, editUser, getUsersByName } from 'queries/users';
 
 import AddButton from './components/AddButton';
 
@@ -111,12 +111,20 @@ interface IQuery {
   confirmPassword: string;
 }
 
-interface ITableUsersProps {
+type TableUsersProps = {
   originData: IQuery[];
-}
+  loadingQuery?: boolean;
+} & typeof defaultProps;
 
-const TableUsers = ({ originData }: ITableUsersProps) => {
+const defaultProps = {
+  loadingQuery: false,
+};
+
+const TableUsers = ({ originData, loadingQuery }: TableUsersProps) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+  const [editingKey, setEditingKey] = useState<number | null>(null);
+  const [dataFiltered, setDataFiltered] = useState<IQuery[] | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -129,6 +137,7 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
       });
     },
     onError: () => {
+      setLoading(false);
       notification.error({
         message: 'An error has occurred',
       });
@@ -137,6 +146,7 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
 
   const mutationEdit = useMutation(editUser, {
     onSuccess: () => {
+      setEditingKey(null);
       queryClient.invalidateQueries('users');
       setLoading(false);
       notification.success({
@@ -144,6 +154,20 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
       });
     },
     onError: () => {
+      setLoading(false);
+      notification.error({
+        message: 'An error has occurred',
+      });
+    },
+  });
+
+  const mutationSearch = useMutation(getUsersByName, {
+    onSuccess: data => {
+      setDataFiltered(data);
+      setLoading(false);
+    },
+    onError: () => {
+      setLoading(false);
       notification.error({
         message: 'An error has occurred',
       });
@@ -151,7 +175,6 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
   });
 
   const [form] = Form.useForm();
-  const [editingKey, setEditingKey] = useState<number | null>(null);
 
   const isEditing = (record: IQuery) => record.id === editingKey;
 
@@ -168,12 +191,12 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
     try {
       const row = (await form.validateFields()) as IQuery;
 
+      setLoading(true);
+
       mutationEdit.mutate({
         id: key,
         userData: row,
       });
-
-      setEditingKey(null);
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
     }
@@ -297,7 +320,26 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
 
   return (
     <div>
-      <AddButton />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <AddButton />
+        <div style={{ width: 10 }} />
+        <Input
+          placeholder="Search by name"
+          value={search}
+          onChange={e => {
+            setSearch(e.target.value);
+
+            if (e.target.value) {
+              setLoading(true);
+              mutationSearch.mutate(e.target.value);
+            } else {
+              setDataFiltered(null);
+            }
+          }}
+          style={{ width: 300 }}
+        />
+      </div>
+
       <div style={{ height: 16 }} />
       <Form form={form} component={false}>
         <Table
@@ -307,17 +349,19 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
               cell: EditableCell,
             },
           }}
-          dataSource={originData}
+          dataSource={dataFiltered || originData}
           columns={mergedColumns}
           rowClassName="editable-row"
           pagination={{
             onChange: cancel,
           }}
-          loading={loading}
+          loading={loading || loadingQuery}
         />
       </Form>
     </div>
   );
 };
+
+TableUsers.defaultProps = defaultProps;
 
 export default TableUsers;
