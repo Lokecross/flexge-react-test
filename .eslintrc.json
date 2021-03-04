@@ -46,7 +46,8 @@
     "no-console": "off",
     "no-param-reassign": "off",
     "react/jsx-props-no-spreading": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off"
   },
   "settings": {
     "import/resolver": {
