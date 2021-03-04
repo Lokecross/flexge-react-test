@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button, Table, Form, InputNumber, Input } from 'antd';
+import { Button, Table, Form, InputNumber, Input, notification } from 'antd';
 
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -82,15 +82,31 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
 
   const mutationDelete = useMutation(deleteUser, {
     onSuccess: () => {
-      setLoading(false);
       queryClient.invalidateQueries('users');
+      setLoading(false);
+      notification.success({
+        message: 'User successfully deleted',
+      });
+    },
+    onError: () => {
+      notification.error({
+        message: 'An error has occurred',
+      });
     },
   });
 
   const mutationEdit = useMutation(editUser, {
     onSuccess: () => {
-      setLoading(false);
       queryClient.invalidateQueries('users');
+      setLoading(false);
+      notification.success({
+        message: 'User successfully edited',
+      });
+    },
+    onError: () => {
+      notification.error({
+        message: 'An error has occurred',
+      });
     },
   });
 
@@ -235,23 +251,34 @@ const TableUsers = ({ originData }: ITableUsersProps) => {
   });
 
   return (
-    <Form form={form} component={false}>
-      <Table
-        bordered
-        components={{
-          body: {
-            cell: EditableCell,
-          },
+    <div>
+      <Button
+        onClick={() => {
+          //
         }}
-        dataSource={originData}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-        loading={loading}
-      />
-    </Form>
+        type="primary"
+        style={{ marginBottom: 16 }}
+      >
+        Add a row
+      </Button>
+      <Form form={form} component={false}>
+        <Table
+          bordered
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          dataSource={originData}
+          columns={mergedColumns}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: cancel,
+          }}
+          loading={loading}
+        />
+      </Form>
+    </div>
   );
 };
 
