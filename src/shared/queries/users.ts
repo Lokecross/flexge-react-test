@@ -1,5 +1,14 @@
 import api from 'services/api';
 
+interface IUser {
+  name: string;
+  age: string;
+  gender: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const getUsers = async () => {
   const { data: users } = await api.get('/users');
 
@@ -12,30 +21,12 @@ const getUsersByName = async (name: string) => {
   return users;
 };
 
-type CreateUserProps = {
-  name: string;
-  age: string;
-  gender: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
+const createUser = async (userData: IUser) => {
+  await api.post('/users', userData);
 };
 
-const createUser = async (newUser: CreateUserProps) => {
-  await api.post('/users', newUser);
-};
-
-type EditUserProps = {
-  name: string;
-  age: string;
-  gender: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-};
-
-const editUser = async (userData: EditUserProps) => {
-  await api.put('/users', userData);
+const editUser = async (id: string, userData: IUser) => {
+  await api.put(`/users/${id}`, userData);
 };
 
 const deleteUser = async (id: string) => {
